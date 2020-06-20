@@ -3,6 +3,8 @@ import './App.css';
 
 import axios from 'axios';
 
+axios.defaults.withCredentials = true;
+
 axios.defaults.headers.common = {
   'Accept': 'application/json',
   'Content-Type': 'application/json'
@@ -13,7 +15,7 @@ const URI_BASE = 'http://localhost:8000';
 const ENDPOINT = {
   // not sure if this is necessary
   csrf: `${URI_BASE}/sanctum/csrf-cookie`,
-  login: `${URI_BASE}/api/login`,
+  login: `${URI_BASE}/login`,
   user: `${URI_BASE}/api/user`,
 }
 
@@ -47,8 +49,7 @@ function App() {
       'Access-Control-Allow-Origin': '*',
       'Authorization': `Bearer ${token}`,
     }).then(response => {
-      const tkn = response.data;
-      set_token(tkn);
+      console.log(response);
     });
   }
 
@@ -57,6 +58,7 @@ function App() {
       <input className="form-text" onChange={ update_email } value={ email } type="text"/>
       <input className="form-text" onChange={ update_pw } value= { password } type="text"/>
       <button className="submit-btn" onClick={ test_credentials }>Test Credentials</button>
+      <button className="submit-btn" onClick={ test_token }>Load User Data</button>
     </Fragment>
   ) : (
     <Fragment>
